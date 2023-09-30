@@ -24,7 +24,7 @@ namespace GUI_Matrix
         }
 
 
-        #region Оприделитель
+        #region Определитель
 
     /// <summary>
     /// Вычисление определителя

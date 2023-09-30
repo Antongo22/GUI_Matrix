@@ -16,9 +16,11 @@ namespace GUI_Matrix
     {
         private List<TextBox> generatedTextBoxes = new List<TextBox>();
         private List<TextBox> generatedKramers = new List<TextBox>();
+        private List<TextBox> generatedMultMatrix = new List<TextBox>();
         int rows;
         int columns;
         double[,] matrix;
+        double[,] multMatrix;
 
         public Form1()
         {
@@ -59,6 +61,16 @@ namespace GUI_Matrix
                     ClearKramers();
                     ShowKramer();
                 }
+                else if (comboBox1.Text == "Умножение на матриуц")
+                {
+                    ClearMult();
+                    CreateMultTextBoxes();
+                }
+                else if (comboBox1.Text == "Умножение на матрицу")
+                {
+                    ClearMult();
+                    CreateMultTextBoxes();
+                }
 
                 // Создаем новые текстбоксы
                 CreateTextBoxes(rows, columns);
@@ -74,7 +86,7 @@ namespace GUI_Matrix
 
         private void CreateTextBoxes(int rows, int columns)
         {
-            // Определяем размеры и расположение контейнера для текстбоксов (Panel)
+           // Определяем размеры и расположение контейнера для текстбоксов (Panel)
             int startX = 15;
             int startY = 40;
             int textBoxWidth = 40;
@@ -92,7 +104,7 @@ namespace GUI_Matrix
                     newTextBox.Left = startX + col * (textBoxWidth + spacing);
                     newTextBox.Top = startY + row * (textBoxHeight + spacing);
 
-                    // Добавляем новый текстбокс на форму и в список
+                    // Доба вляем новый текстбокс на форму и в список
                     this.Controls.Add(newTextBox);
                     generatedTextBoxes.Add(newTextBox);
                 }
@@ -107,11 +119,21 @@ namespace GUI_Matrix
                 this.Controls.Remove(textBox);
                 textBox.Dispose();
             }
-
+            foreach (TextBox textBox in generatedKramers)
+            {
+                this.Controls.Remove(textBox);
+                textBox.Dispose();
+            }
+            foreach (TextBox textBox in generatedMultMatrix)
+            {
+                this.Controls.Remove(textBox);
+                textBox.Dispose();
+            }
 
             // Очищаем список
             generatedTextBoxes.Clear();
             generatedKramers.Clear();
+            generatedMultMatrix.Clear();
         }
 
         private void ClearKramers()
@@ -125,8 +147,16 @@ namespace GUI_Matrix
             generatedKramers.Clear();
         }
 
+        private void ClearMult()
+        {
+            foreach (TextBox textBox in generatedMultMatrix)
+            {
+                this.Controls.Remove(textBox);
+                textBox.Dispose();
+            }
 
-
+            generatedMultMatrix.Clear();
+        }
 
         private void textBoxMatrixStart_TextChanged(object sender, EventArgs e)
         {
@@ -201,6 +231,31 @@ namespace GUI_Matrix
             return true;
         }
 
+        private bool TransferDataToMultMatrix()
+        {
+            multMatrix = new double[columns, rows];
+
+            for (int row = 0; row < columns; row++)
+            {
+                for (int col = 0; col < rows; col++)
+                {
+                    // Получаем значение из соответствующего текстбокса
+                    TextBox textBox = generatedMultMatrix[row * rows + col];
+                    if (double.TryParse(textBox.Text, out double value))
+                    {
+                        multMatrix[row, col] = value;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Пожалуйста, введите корректное числовое значение во все текстбоксы.");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+
         void ShowKramer()
         {
             // Определяем размеры и расположение контейнера для текстбоксов (Panel)
@@ -232,8 +287,7 @@ namespace GUI_Matrix
             Matrix fmatrix = new Matrix(matrix);
             switch (comboBox1.Text)
             {
-                case "Оприделитель":
-                    
+                case "Определитель":                   
                     MessageBox.Show(fmatrix.CulcDeterminant().ToString());
                     break;
                 case "Обратная матрица":
@@ -256,7 +310,7 @@ namespace GUI_Matrix
                         string finalRes = "";
                         for(int i = 0; i < kram_res.Length; i++)
                         {
-                            finalRes += kram_res[i] + ", ";
+                            finalRes += kram_res[i] + "  ";
                         }
                         MessageBox.Show(finalRes);
                     }
@@ -276,6 +330,14 @@ namespace GUI_Matrix
                     MessageBox.Show(ans);
                     break;
 
+                case "Умножение на матрицу":
+                    if (!TransferDataToMultMatrix()) return;
+
+                    Matrix multMatrx = new Matrix(multMatrix);
+
+                    string newMutMatrix = (fmatrix * multMatrx).ToString();
+                    MessageBox.Show(newMutMatrix);
+                    break;
 
 
             }
@@ -303,24 +365,50 @@ namespace GUI_Matrix
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ClearMult();
+            ClearKramers();
+            textBoxMult.Visible = false;
             if (comboBox1.Text == "Крамер")
-            {
-                ClearKramers();
+            {               
                 ShowKramer();
             }
-            else if (comboBox1.Text != "Крамер")
+            else if (comboBox1.Text == "Умножение на матрицу")
             {
-                ClearKramers();
+                CreateMultTextBoxes();
             }
-
-            if(comboBox1.Text == "Умножение на число")
+            else if (comboBox1.Text == "Умножение на число")
             {
                 textBoxMult.Visible = true;
             }
-            else
+        }
+
+        private void CreateMultTextBoxes()
+        {
+            // Определяем размеры и расположение контейнера для текстбоксов (Panel)
+            int startX = 500;
+            int startY = 40;
+            int textBoxWidth = 40;
+            int textBoxHeight = 25;
+            int spacing = 5;
+
+            for (int row = 0; row < columns; row++)
             {
-                textBoxMult.Visible = false;
+                for (int col = 0; col < rows; col++)
+                {
+                    // Создаем новый текстбокс
+                    TextBox newTextBox = new TextBox();
+                    newTextBox.Width = textBoxWidth;
+                    newTextBox.Height = textBoxHeight;
+                    newTextBox.Left = startX + col * (textBoxWidth + spacing);
+                    newTextBox.Top = startY + row * (textBoxHeight + spacing);
+
+                    // Доба вляем новый текстбокс на форму и в список
+                    this.Controls.Add(newTextBox);
+                    generatedMultMatrix.Add(newTextBox);
+                }
             }
         }
+
+
     }
 }
