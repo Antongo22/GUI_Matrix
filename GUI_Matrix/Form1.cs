@@ -8,13 +8,93 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace GUI_Matrix
 {
     public partial class Form1 : Form
     {
+        private List<TextBox> generatedTextBoxes = new List<TextBox>();
+
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        void InitializeMatrix()
+        {
+            if (String.IsNullOrEmpty(textBoxMatrixStart.Text) || String.IsNullOrEmpty(textBoxMatrixEnd.Text))
+            {
+                return;
+            }
+
+            // Получаем значения из textbox1 и textbox2 и преобразуем их в целые числа
+            if (int.TryParse(textBoxMatrixStart.Text, out int rows) && int.TryParse(textBoxMatrixEnd.Text, out int columns))
+            {
+                // Очищаем предыдущие созданные текстбоксы
+                ClearTextBoxes();
+
+                // Создаем новые текстбоксы
+                CreateTextBoxes(rows, columns);
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, введите корректные числа для заполнения!");
+            }
+        }
+
+        private void CreateTextBoxes(int rows, int columns)
+        {
+            // Определяем размеры и расположение контейнера для текстбоксов (Panel)
+            int startX = 20;
+            int startY = 60;
+            int textBoxWidth = 80;
+            int textBoxHeight = 25;
+            int spacing = 5;
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < columns; col++)
+                {
+                    // Создаем новый текстбокс
+                    TextBox newTextBox = new TextBox();
+                    newTextBox.Width = textBoxWidth;
+                    newTextBox.Height = textBoxHeight;
+                    newTextBox.Left = startX + col * (textBoxWidth + spacing);
+                    newTextBox.Top = startY + row * (textBoxHeight + spacing);
+
+                    // Добавляем новый текстбокс на форму и в список
+                    this.Controls.Add(newTextBox);
+                    generatedTextBoxes.Add(newTextBox);
+                }
+            }
+        }
+
+        private void ClearTextBoxes()
+        {
+            // Удаляем все текстбоксы из списка и с формы
+            foreach (TextBox textBox in generatedTextBoxes)
+            {
+                this.Controls.Remove(textBox);
+                textBox.Dispose();
+            }
+
+            // Очищаем список
+            generatedTextBoxes.Clear();
+        }
+
+        private void textBoxMatrixStart_TextChanged(object sender, EventArgs e)
+        {
+            InitializeMatrix();
+        }
+
+        private void textBoxMatrixEnd_TextChanged(object sender, EventArgs e)
+        {
+            InitializeMatrix();
         }
     }
 }
