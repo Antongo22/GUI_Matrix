@@ -265,6 +265,16 @@ namespace GUI_Matrix
                         MessageBox.Show(ex.Message);
                     }
                     break;
+                case "Умножение на число":
+                    if(!double.TryParse(textBoxMult.Text, out double result))
+                    {
+                        MessageBox.Show("Неверные данные! Заполните ещё раз!");
+                        return; 
+                    }
+
+                    string ans = (fmatrix * result).ToString();
+                    MessageBox.Show(ans);
+                    break;
 
 
 
@@ -301,6 +311,15 @@ namespace GUI_Matrix
             else if (comboBox1.Text != "Крамер")
             {
                 ClearKramers();
+            }
+
+            if(comboBox1.Text == "Умножение на число")
+            {
+                textBoxMult.Visible = true;
+            }
+            else
+            {
+                textBoxMult.Visible = false;
             }
         }
     }

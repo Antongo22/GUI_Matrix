@@ -35,6 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.buttonCulc = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.textBoxMult = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxMatrixStart
@@ -88,7 +89,8 @@
             this.comboBox1.Items.AddRange(new object[] {
             "Оприделитель",
             "Крамер",
-            "Обратная матрица"});
+            "Обратная матрица",
+            "Умножение на число"});
             this.comboBox1.Location = new System.Drawing.Point(851, 6);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
@@ -97,11 +99,20 @@
             this.comboBox1.Visible = false;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
+            // textBoxMult
+            // 
+            this.textBoxMult.Location = new System.Drawing.Point(928, 34);
+            this.textBoxMult.Name = "textBoxMult";
+            this.textBoxMult.Size = new System.Drawing.Size(44, 20);
+            this.textBoxMult.TabIndex = 6;
+            this.textBoxMult.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 461);
+            this.Controls.Add(this.textBoxMult);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.buttonCulc);
             this.Controls.Add(this.label2);
@@ -127,6 +138,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonCulc;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox textBoxMult;
     }
 }
 
