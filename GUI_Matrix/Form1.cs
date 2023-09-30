@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,6 +36,12 @@ namespace GUI_Matrix
             // Получаем значения из textbox1 и textbox2 и преобразуем их в целые числа
             if (int.TryParse(textBoxMatrixStart.Text, out int rows) && int.TryParse(textBoxMatrixEnd.Text, out int columns))
             {
+                if(rows > 10 || columns > 10)
+                {
+                    MessageBox.Show("Пожалуйста, введите корректные числа для заполнения (максимальная матрица - 10 на 10)!");
+                    return;
+                }
+
                 // Очищаем предыдущие созданные текстбоксы
                 ClearTextBoxes();
 
@@ -50,9 +57,9 @@ namespace GUI_Matrix
         private void CreateTextBoxes(int rows, int columns)
         {
             // Определяем размеры и расположение контейнера для текстбоксов (Panel)
-            int startX = 20;
-            int startY = 60;
-            int textBoxWidth = 80;
+            int startX = 15;
+            int startY = 40;
+            int textBoxWidth = 40;
             int textBoxHeight = 25;
             int spacing = 5;
 
