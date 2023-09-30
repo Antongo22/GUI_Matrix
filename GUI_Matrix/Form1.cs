@@ -42,6 +42,8 @@ namespace GUI_Matrix
                 if(rows > 10 || columns > 10)
                 {
                     MessageBox.Show("Пожалуйста, введите корректные числа для заполнения (максимальная матрица - 10 на 10)!");
+                    buttonCulc.Visible = false;
+                    ClearTextBoxes();
                     return;
                 }
                 this.rows = rows;
@@ -52,6 +54,9 @@ namespace GUI_Matrix
 
                 // Создаем новые текстбоксы
                 CreateTextBoxes(rows, columns);
+
+                buttonCulc.Visible = true;
+
             }
             else
             {
@@ -101,11 +106,34 @@ namespace GUI_Matrix
 
         private void textBoxMatrixStart_TextChanged(object sender, EventArgs e)
         {
+            if (int.TryParse(textBoxMatrixStart.Text, out int rows) && int.TryParse(textBoxMatrixEnd.Text, out int columns))
+            {
+                if (rows == 0 || columns == 0)
+                {
+                    buttonCulc.Visible = false;
+                    return;
+                }
+            }
+            else
+            {
+                buttonCulc.Visible = false;
+            }
+
             InitializeMatrix();
         }
 
         private void textBoxMatrixEnd_TextChanged(object sender, EventArgs e)
         {
+            if(int.TryParse(textBoxMatrixStart.Text, out int rows) && int.TryParse(textBoxMatrixEnd.Text, out int columns))
+            {
+                if (rows == 0 || columns == 0)
+                {
+                    buttonCulc.Visible = false;
+                    return;
+                }
+            }
+           
+
             InitializeMatrix();
         }
 
@@ -135,6 +163,7 @@ namespace GUI_Matrix
 
         private void buttonCulc_Click(object sender, EventArgs e)
         {
+
             if (!TransferDataToMatrix()) return;
 
             Matrix fmatrix = new Matrix(matrix);

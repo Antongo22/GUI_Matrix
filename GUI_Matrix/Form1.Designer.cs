@@ -34,6 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonCulc = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // textBoxMatrixStart
@@ -72,27 +73,42 @@
             // 
             // buttonCulc
             // 
-            this.buttonCulc.Location = new System.Drawing.Point(597, 426);
+            this.buttonCulc.Location = new System.Drawing.Point(897, 426);
             this.buttonCulc.Name = "buttonCulc";
             this.buttonCulc.Size = new System.Drawing.Size(75, 23);
             this.buttonCulc.TabIndex = 4;
             this.buttonCulc.Text = "Вычислить";
             this.buttonCulc.UseVisualStyleBackColor = true;
+            this.buttonCulc.Visible = false;
             this.buttonCulc.Click += new System.EventHandler(this.buttonCulc_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Оприделитель",
+            "Крамер ",
+            "Обратная матрица"});
+            this.comboBox1.Location = new System.Drawing.Point(851, 6);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 21);
+            this.comboBox1.TabIndex = 5;
+            this.comboBox1.Text = "Оприделитель";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 461);
+            this.ClientSize = new System.Drawing.Size(984, 461);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.buttonCulc);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxMatrixEnd);
             this.Controls.Add(this.textBoxMatrixStart);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(700, 500);
-            this.MinimumSize = new System.Drawing.Size(700, 500);
+            this.MaximumSize = new System.Drawing.Size(1000, 500);
+            this.MinimumSize = new System.Drawing.Size(1000, 500);
             this.Name = "Form1";
             this.Text = "Matrix";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -108,6 +124,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonCulc;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 
