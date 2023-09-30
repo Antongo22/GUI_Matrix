@@ -15,6 +15,7 @@ namespace GUI_Matrix
     public partial class Form1 : Form
     {
         private List<TextBox> generatedTextBoxes = new List<TextBox>();
+        private List<TextBox> generatedKramers = new List<TextBox>();
         int rows;
         int columns;
         double[,] matrix;
@@ -31,6 +32,7 @@ namespace GUI_Matrix
 
         void InitializeMatrix()
         {
+
             if (String.IsNullOrEmpty(textBoxMatrixStart.Text) || String.IsNullOrEmpty(textBoxMatrixEnd.Text))
             {
                 return;
@@ -51,6 +53,12 @@ namespace GUI_Matrix
 
                 // Очищаем предыдущие созданные текстбоксы
                 ClearTextBoxes();
+
+                if (comboBox1.Text == "Крамер")
+                {
+                    ClearKramers();
+                    ShowKramer();
+                }
 
                 // Создаем новые текстбоксы
                 CreateTextBoxes(rows, columns);
@@ -100,12 +108,36 @@ namespace GUI_Matrix
                 textBox.Dispose();
             }
 
+
             // Очищаем список
             generatedTextBoxes.Clear();
+            generatedKramers.Clear();
         }
+
+        private void ClearKramers()
+        {
+            foreach (TextBox textBox in generatedKramers)
+            {
+                this.Controls.Remove(textBox);
+                textBox.Dispose();
+            }
+
+            generatedKramers.Clear();
+        }
+
+
+
 
         private void textBoxMatrixStart_TextChanged(object sender, EventArgs e)
         {
+            if (String.IsNullOrEmpty(textBoxMatrixStart.Text) || String.IsNullOrEmpty(textBoxMatrixEnd.Text))
+            {
+                comboBox1.Visible = false;
+            }
+            else
+            {
+                comboBox1.Visible = true;
+            }
             if (int.TryParse(textBoxMatrixStart.Text, out int rows) && int.TryParse(textBoxMatrixEnd.Text, out int columns))
             {
                 if (rows == 0 || columns == 0)
@@ -124,7 +156,15 @@ namespace GUI_Matrix
 
         private void textBoxMatrixEnd_TextChanged(object sender, EventArgs e)
         {
-            if(int.TryParse(textBoxMatrixStart.Text, out int rows) && int.TryParse(textBoxMatrixEnd.Text, out int columns))
+            if (String.IsNullOrEmpty(textBoxMatrixStart.Text) || String.IsNullOrEmpty(textBoxMatrixEnd.Text))
+            {
+                comboBox1.Visible = false;
+            }
+            else
+            {
+                comboBox1.Visible = true;
+            }
+            if (int.TryParse(textBoxMatrixStart.Text, out int rows) && int.TryParse(textBoxMatrixEnd.Text, out int columns))
             {
                 if (rows == 0 || columns == 0)
                 {
@@ -161,14 +201,107 @@ namespace GUI_Matrix
             return true;
         }
 
+        void ShowKramer()
+        {
+            // Определяем размеры и расположение контейнера для текстбоксов (Panel)
+            int startX = 920;
+            int startY = 40;
+            int textBoxWidth = 40;
+            int textBoxHeight = 25;
+            int spacing = 5;
+
+            for (int row = 0; row < rows; row++)
+            {
+                // Создаем новый текстбокс
+                TextBox newTextBox = new TextBox();
+                newTextBox.Width = textBoxWidth;
+                newTextBox.Height = textBoxHeight;
+                newTextBox.Left = startX;
+                newTextBox.Top = startY + row * (textBoxHeight + spacing);
+
+                // Добавляем новый текстбокс на форму и в список
+                this.Controls.Add(newTextBox);
+                generatedKramers.Add(newTextBox);
+            }
+        }
+
         private void buttonCulc_Click(object sender, EventArgs e)
         {
 
             if (!TransferDataToMatrix()) return;
-
             Matrix fmatrix = new Matrix(matrix);
-            MessageBox.Show(fmatrix.CulcDeterminant().ToString());
+            switch (comboBox1.Text)
+            {
+                case "Оприделитель":
+                    
+                    MessageBox.Show(fmatrix.CulcDeterminant().ToString());
+                    break;
+                case "Обратная матрица":
+                    try
+                    {
+                        string invmat = fmatrix.InverseMatrix().ToString();
+                        MessageBox.Show(invmat);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }                    
+                    break;
+                case "Крамер":
+                    try
+                    {
+                        double[] kramers = GetKramers();
+                        double[] kram_res = fmatrix.Kramer(kramers);
 
+                        string finalRes = "";
+                        for(int i = 0; i < kram_res.Length; i++)
+                        {
+                            finalRes += kram_res[i] + ", ";
+                        }
+                        MessageBox.Show(finalRes);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    break;
+
+
+
+            }
+            
+
+        }
+
+        double[] GetKramers()
+        {
+            double[] kr = new double[generatedKramers.Count()];
+
+            for(int i = 0; i < generatedKramers.Count; i++)
+            {
+                if(double.TryParse(generatedKramers[i].Text, out double num))
+                {
+                    kr[i] = num;
+                }
+                else
+                {
+                    throw new Exception("Заполните все поля коректно!");
+                }
+            }
+            return kr;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBox1.Text == "Крамер")
+            {
+                ClearKramers();
+                ShowKramer();
+            }
+            else if (comboBox1.Text != "Крамер")
+            {
+                ClearKramers();
+            }
         }
     }
 }

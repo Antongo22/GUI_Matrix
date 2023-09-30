@@ -26,96 +26,96 @@ namespace GUI_Matrix
 
         #region Оприделитель
 
-        /// <summary>
-        /// Вычисление определителя
-        /// </summary>
-        /// <exception cref="Exception">Ошибка того, что матрица может быть не равномерной</exception>
-        public double CulcDeterminant()
+    /// <summary>
+    /// Вычисление определителя
+    /// </summary>
+    /// <exception cref="Exception">Ошибка того, что матрица может быть не равномерной</exception>
+    public double CulcDeterminant()
+    {
+        if (matrix.GetLength(0) != matrix.GetLength(1))
         {
-            if (matrix.GetLength(0) != matrix.GetLength(1))
-            {
-                throw new Exception("Матрица не одинаковых размеров!");
-            }
-            double solution = SolutionMatrix(matrix);
-            return solution;
+            throw new Exception("Матрица не одинаковых размеров!");
+        }
+        double solution = SolutionMatrix(matrix);
+        return solution;
+    }
+
+    /// <summary>
+    /// Вычисление определителя
+    /// </summary>
+    /// <exception cref="Exception">Ошибка того, что матрица может быть не равномерной</exception>
+    double CulcDeterminant(double[,] matrix)
+    {
+        if (matrix.GetLength(0) != matrix.GetLength(1))
+        {
+            throw new Exception("Матрица не одинаковых размеров!");
+        }
+        double solution = SolutionMatrix(matrix);
+        return solution;
+    }
+
+    /// <summary>
+    /// Вычисление матрицы 2 на 2
+    /// </summary>
+    /// <param name="tMatrix">сама матрица</param>
+    /// <returns></returns>
+    double Solution(double[,] tMatrix)
+    {
+        return tMatrix[0, 0] * tMatrix[1, 1] - tMatrix[0, 1] * tMatrix[1, 0];
+    }
+
+    /// <summary>
+    /// Основное решение матрицы
+    /// </summary>
+    /// <param name="matrix">матрица для вычисления</param>
+    /// <returns></returns>
+    double SolutionMatrix(double[,] matrix)
+    {
+        if (matrix.GetLength(0) == 2)
+        {
+            return Solution(matrix);
         }
 
-        /// <summary>
-        /// Вычисление определителя
-        /// </summary>
-        /// <exception cref="Exception">Ошибка того, что матрица может быть не равномерной</exception>
-        double CulcDeterminant(double[,] matrix)
+        double[] matrixMinor = new double[matrix.GetLength(0)];
+        double[,] matrixM = new double[matrix.GetLength(0) - 1, matrix.GetLength(0) - 1];
+        double[,,] smallMatrix = new double[matrix.GetLength(0), matrix.GetLength(0) - 1, matrix.GetLength(0) - 1];
+        double solution = 0;
+
+        for (int i = 0; i < matrix.GetLength(0); i++)
         {
-            if (matrix.GetLength(0) != matrix.GetLength(1))
+            matrixMinor[i] = matrix[0, i];
+            for (int j = 0; j < matrix.GetLength(0); j++)
             {
-                throw new Exception("Матрица не одинаковых размеров!");
-            }
-            double solution = SolutionMatrix(matrix);
-            return solution;
-        }
-
-        /// <summary>
-        /// Вычисление матрицы 2 на 2
-        /// </summary>
-        /// <param name="tMatrix">сама матрица</param>
-        /// <returns></returns>
-        double Solution(double[,] tMatrix)
-        {
-            return tMatrix[0, 0] * tMatrix[1, 1] - tMatrix[0, 1] * tMatrix[1, 0];
-        }
-
-        /// <summary>
-        /// Основное решение матрицы
-        /// </summary>
-        /// <param name="matrix">матрица для вычисления</param>
-        /// <returns></returns>
-        double SolutionMatrix(double[,] matrix)
-        {
-            if (matrix.GetLength(0) == 2)
-            {
-                return Solution(matrix);
-            }
-
-            double[] matrixMinor = new double[matrix.GetLength(0)];
-            double[,] matrixM = new double[matrix.GetLength(0) - 1, matrix.GetLength(0) - 1];
-            double[,,] smallMatrix = new double[matrix.GetLength(0), matrix.GetLength(0) - 1, matrix.GetLength(0) - 1];
-            double solution = 0;
-
-            for (int i = 0; i < matrix.GetLength(0); i++)
-            {
-                matrixMinor[i] = matrix[0, i];
-                for (int j = 0; j < matrix.GetLength(0); j++)
+                for (int k = 0; k < matrix.GetLength(1); k++)
                 {
-                    for (int k = 0; k < matrix.GetLength(1); k++)
+                    if (k != i && j != 0)
                     {
-                        if (k != i && j != 0)
-                        {
-                            smallMatrix[i, j - 1, (k < i ? k : k - 1)] = matrix[j, k];
-                        }
-
+                        smallMatrix[i, j - 1, (k < i ? k : k - 1)] = matrix[j, k];
                     }
 
                 }
-            }
 
-            for (int i = 0; i < smallMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < smallMatrix.GetLength(1); j++)
-                {
-                    for (int k = 0; k < smallMatrix.GetLength(1); k++)
-                    {
-                        matrixM[j, k] = smallMatrix[i, j, k];
-                    }
-                }
-                double a = matrixMinor[i] * SolutionMatrix(matrixM);
-                a = i % 2 == 0 ? a : (-1 * a);
-                solution += a;
             }
-
-            return solution;
         }
 
-        #endregion
+        for (int i = 0; i < smallMatrix.GetLength(0); i++)
+        {
+            for (int j = 0; j < smallMatrix.GetLength(1); j++)
+            {
+                for (int k = 0; k < smallMatrix.GetLength(1); k++)
+                {
+                    matrixM[j, k] = smallMatrix[i, j, k];
+                }
+            }
+            double a = matrixMinor[i] * SolutionMatrix(matrixM);
+            a = i % 2 == 0 ? a : (-1 * a);
+            solution += a;
+        }
+
+        return solution;
+    }
+
+    #endregion
 
 
         #region Переопредиление стандартных операций
@@ -235,6 +235,22 @@ namespace GUI_Matrix
         {
             return matrix.GetLength(num);
         }
+
+        public override string ToString()
+        {
+            string invMatrix = "";
+
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    invMatrix += matrix[i, j] + "  ";
+                }
+                invMatrix += "\n";
+            }
+            return invMatrix;   
+        }
+        
 
         #endregion
 

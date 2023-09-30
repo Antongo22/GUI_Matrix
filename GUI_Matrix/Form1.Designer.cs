@@ -87,13 +87,15 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Оприделитель",
-            "Крамер ",
+            "Крамер",
             "Обратная матрица"});
             this.comboBox1.Location = new System.Drawing.Point(851, 6);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 5;
             this.comboBox1.Text = "Оприделитель";
+            this.comboBox1.Visible = false;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // Form1
             // 
