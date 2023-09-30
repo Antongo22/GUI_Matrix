@@ -36,6 +36,7 @@
             this.buttonCulc = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBoxMult = new System.Windows.Forms.TextBox();
+            this.buttonCl = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBoxMatrixStart
@@ -108,11 +109,22 @@
             this.textBoxMult.TabIndex = 6;
             this.textBoxMult.Visible = false;
             // 
+            // buttonCl
+            // 
+            this.buttonCl.Location = new System.Drawing.Point(12, 427);
+            this.buttonCl.Name = "buttonCl";
+            this.buttonCl.Size = new System.Drawing.Size(75, 23);
+            this.buttonCl.TabIndex = 7;
+            this.buttonCl.Text = "Очистить";
+            this.buttonCl.UseVisualStyleBackColor = true;
+            this.buttonCl.Click += new System.EventHandler(this.buttonCl_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 461);
+            this.Controls.Add(this.buttonCl);
             this.Controls.Add(this.textBoxMult);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.buttonCulc);
@@ -140,6 +152,7 @@
         private System.Windows.Forms.Button buttonCulc;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBoxMult;
+        private System.Windows.Forms.Button buttonCl;
     }
 }
 

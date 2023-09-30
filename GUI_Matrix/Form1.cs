@@ -409,6 +409,14 @@ namespace GUI_Matrix
             }
         }
 
-
+        private void buttonCl_Click(object sender, EventArgs e)
+        {
+            ClearKramers();
+            ClearMult();
+            ClearTextBoxes();
+            textBoxMult.Visible = false;
+            textBoxMatrixStart.Text = string.Empty;
+            textBoxMatrixEnd.Text = string.Empty;
+        }
     }
 }
