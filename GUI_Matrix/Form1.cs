@@ -15,6 +15,9 @@ namespace GUI_Matrix
     public partial class Form1 : Form
     {
         private List<TextBox> generatedTextBoxes = new List<TextBox>();
+        int rows;
+        int columns;
+        double[,] matrix;
 
         public Form1()
         {
@@ -41,6 +44,8 @@ namespace GUI_Matrix
                     MessageBox.Show("Пожалуйста, введите корректные числа для заполнения (максимальная матрица - 10 на 10)!");
                     return;
                 }
+                this.rows = rows;
+                this.columns = columns;
 
                 // Очищаем предыдущие созданные текстбоксы
                 ClearTextBoxes();
@@ -102,6 +107,39 @@ namespace GUI_Matrix
         private void textBoxMatrixEnd_TextChanged(object sender, EventArgs e)
         {
             InitializeMatrix();
+        }
+
+        private bool TransferDataToMatrix()
+        {
+            matrix = new double[rows, columns];
+
+            for (int row = 0; row < rows; row++)
+            {
+                for (int col = 0; col < columns; col++)
+                {
+                    // Получаем значение из соответствующего текстбокса
+                    TextBox textBox = generatedTextBoxes[row * columns + col];
+                    if (double.TryParse(textBox.Text, out double value))
+                    {
+                        matrix[row, col] = value;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Пожалуйста, введите корректное числовое значение во все текстбоксы.");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private void buttonCulc_Click(object sender, EventArgs e)
+        {
+            if (!TransferDataToMatrix()) return;
+
+            Matrix fmatrix = new Matrix(matrix);
+            MessageBox.Show(fmatrix.CulcDeterminant().ToString());
+
         }
     }
 }
